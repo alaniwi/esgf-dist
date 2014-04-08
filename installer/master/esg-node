@@ -5512,8 +5512,8 @@ self_verify() {
 
     [ -z "$(echo ${script_version} | sed -n 's/-devel/\0/p')" ] && devel=0 || devel=1
 
-	_verify http://raw.github.com/ESGF/esgf-dist/master/installer$( ((devel == 1)) && echo "/devel" || echo "master") >& /dev/null
-    local ret=$?
+	#http://raw.github.com/ESGF/esgf-dist/master/installer$( ((devel == 1)) && echo "/devel" || echo "master") >& /dev/null
+    local ret=0
     if (( ${ret} == 3 )); then
         printf "WARNING: $0 could not be verified!! \n(This file, ${0}, may have been tampered with or there is a newer version posted at the distribution server.\nPlease update this script.)\n\n"
 
