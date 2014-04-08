@@ -111,7 +111,7 @@ init() {
     debug_print "esg-node initilizing..."
     ! hostname --fqdn >& /dev/null && echo "Please be sure this host has a fully qualified hostname and reponds to \"hostname --fqdn\" command" && exit 1
     if [ ! -e ${esg_functions_file} ] || ((force_install)) || [ ${esg_functions_file} -ot $0 ]; then
-        checked_get ${esg_functions_file} http://198.128.245.140/dist$( ((devel == 1)) && echo "/devel" || echo "")/esgf-installer/${esg_functions_file##*/} $((force_install))
+        checked_get ${esg_functions_file} ${esg_dist_url_root:-"http://dist.ceda.ac.uk/esgf/dist"}$( ((devel == 1)) && echo "/devel" || echo "")/esgf-installer/${esg_functions_file##*/} $((force_install))
         [ ! -s "${esg_functions_file}" ] && rm ${esg_functions_file}
         touch ${esg_functions_file}
     fi
@@ -266,7 +266,7 @@ init() {
 
     word_size=${word_size:-$(file /bin/bash | perl -ple 's/^.*ELF\s*(32|64)-bit.*$/$1/g')}
     let num_cpus=1+$(cat /proc/cpuinfo | sed -n 's/^processor[ \t]*:[ \t]*\(.*\)$/\1/p' | tail -1)
-    esg_dist_url_root=http://198.128.245.140/dist
+    esg_dist_url_root=${esg_dist_url_root:-"http://dist.ceda.ac.uk/esgf/dist"}
     esg_dist_url=${esg_dist_url_root}$( ((devel == 1)) && echo "/devel" || echo "")
     date_format="+%Y_%m_%d_%H%M%S"
     num_backups_to_keep=${num_backups_to_keep:-7}
@@ -339,7 +339,7 @@ init_structure() {
     #--------------
 
     #reset esg_dist_url if necessary...
-    esg_dist_url=http://198.128.245.140/dist$( ((devel == 1)) && echo "/devel" || echo "")
+    esg_dist_url=${esg_dist_url_root:-"http://dist.ceda.ac.uk/esgf/dist"}$( ((devel == 1)) && echo "/devel" || echo "")
 
     (($DEBUG)) && echo "init_structure: esg_dist_url = ${esg_dist_url}"
 
